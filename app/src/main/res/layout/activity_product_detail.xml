@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProductDetailActivity">
+
+    <ImageView
+        android:id="@+id/product_img"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/productName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="20dp"/>
+
+    <!-- Mô tả sản phẩm -->
+    <TextView
+        android:id="@+id/productDescrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingTop="8dp"/>
+
+    <!-- Giá sản phẩm -->
+    <TextView
+        android:id="@+id/productPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingTop="8dp"/>
+
+    <!-- Chọn kích thước giày -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chọn kích thước giày"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingTop="16sp" />
+
+    <!-- Hiển thị kích thước giày -->
+    <RadioGroup
+        android:id="@+id/sizeGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp">
+
+        <RadioButton
+            android:id="@+id/size37"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="37"/>
+
+        <RadioButton
+            android:id="@+id/size38"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="38"/>
+
+        <RadioButton
+            android:id="@+id/size39"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="39"/>
+
+        <RadioButton
+            android:id="@+id/size40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="40"/>
+
+        <RadioButton
+            android:id="@+id/size41"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="41"/>
+
+        <RadioButton
+            android:id="@+id/size42"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="42"/>
+    </RadioGroup>
+
+    <!-- Trường nhập mã giảm giá -->
+    <EditText
+        android:id="@+id/discountCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập mã giảm giá"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Nút áp dụng mã giảm giá -->
+    <Button
+        android:id="@+id/applyDiscount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Áp dụng mã giảm giá"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"/>
+
+    <!-- LinearLayout chứa nút "Thêm vào giỏ hàng" và "Mua hàng" nằm ngang -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <!-- Nút thêm vào giỏ hàng -->
+        <Button
+            android:id="@+id/btnAddToCart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Thêm vào giỏ hàng"
+            android:textSize="18sp"/>
+
+        <!-- Nút mua hàng -->
+        <Button
+            android:id="@+id/btnBuyNow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Mua hàng"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <!-- Nút quay về -->
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quay về"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

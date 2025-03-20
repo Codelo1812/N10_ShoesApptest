@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">VHH</string>
+    <string name="title_shop">Shop</string>
+    <string name="title_cart">Cart</string>
+    <string name="title_favorite">Favorite</string>
+    <string name="title_home">Home</string>
+    <string name="title_profile">Profile</string>
+    <string name="app_icon_desc">App Icon</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="select_category">Select Category</string>
+    <string name="available_only">Available Only</string>
+
+    <string-array name="shoe_sizes">
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="category_array">
+        <item>All</item>
+        <item>Nike</item>
+        <item>Adidas</item>
+        <item>Puma</item>
+        <item>children</item>
+        <item>cao cổ</item>
+    </string-array>
+</resources>
