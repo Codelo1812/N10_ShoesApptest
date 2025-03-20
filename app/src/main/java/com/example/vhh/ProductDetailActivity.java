@@ -34,6 +34,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private Button btnBack; // Nút quay về
     private String selectedSize;
     private double originalPrice; // Giá gốc của sản phẩm
+    private EditText quantityEditText;
 
     // Danh sách mã giảm giá hợp lệ và tỷ lệ giảm giá tương ứng
     private Map<String, Double> discountCodes;
@@ -108,8 +109,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     String cartItems = sharedPreferences.getString("cart_items", "");
 
                     // Tạo chuỗi JSON cho sản phẩm mới
-                    String newProduct = String.format("{\"name\":\"%s\",\"size\":\"%s\",\"price\":%f,\"imageResId\":%d,\"quantity\":%d}",
-                            productName, selectedSize, originalPrice, productImageResId, quantity);
+                    String newProduct = String.format("{\"name\":\"%s\",\"size\":\"%s\",\"price\":%f,\"imageResId\":%d,\"quantity\":%d}", productName, selectedSize, originalPrice, productImageResId, quantity);
 
                     // Thêm sản phẩm vào chuỗi JSON hiện tại
                     if (!cartItems.isEmpty()) {
