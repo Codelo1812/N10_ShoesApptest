@@ -54,6 +54,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnAddToCart = findViewById(R.id.btnAddToCart);
         btnBuyNow = findViewById(R.id.btnBuyNow); // Tìm nút mua hàng
         btnBack = findViewById(R.id.btnBack); // Tìm nút quay về
+        quantityEditText = findViewById(R.id.quantity_edit_text);
 
         // Khởi tạo danh sách mã giảm giá hợp lệ
         discountCodes = new HashMap<>();

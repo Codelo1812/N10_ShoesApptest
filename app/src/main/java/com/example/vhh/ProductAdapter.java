@@ -78,4 +78,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+    // thêm phương thức cập nhật dữ liệu
+    public void updateData(List<Product> newData) {
+        this.mData = newData;
+        notifyDataSetChanged();
+    }
 }

@@ -82,7 +82,7 @@ public class CartActivity extends AppCompatActivity {
         checkoutButton.setOnClickListener(v -> processCheckout());
     }
 
-    private void calculateTotal() {
+    public void calculateTotal() {
         double total = 0;
         for (Product product : cartProductList) {
             total += product.getPrice() * product.getQuantity(); // Tính tổng giá trị sản phẩm dựa trên số lượng
