@@ -8,15 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 
 public class CartActivity extends AppCompatActivity {
     private RecyclerView cartRecyclerView;
@@ -25,6 +27,8 @@ public class CartActivity extends AppCompatActivity {
     private TextView cartTotal;
     private TextView emptyCartMessage;
     private Button checkoutButton;
+    private DatabaseReference cartDatabase;
+    private TextView cartDiscountedTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,76 +39,72 @@ public class CartActivity extends AppCompatActivity {
         cartTotal = findViewById(R.id.cart_total);
         emptyCartMessage = findViewById(R.id.empty_cart_message);
         checkoutButton = findViewById(R.id.checkout_button);
+        cartDiscountedTotal = findViewById(R.id.cart_discounted_total);
 
-        // Đọc dữ liệu từ SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("CartPrefs", Context.MODE_PRIVATE);
-        String cartItems = sharedPreferences.getString("cart_items", "[]");
+        cartDatabase = FirebaseDatabase.getInstance().getReference("cart");
 
-        // Giả lập danh sách sản phẩm trong giỏ hàng
         cartProductList = new ArrayList<>();
-        try {
-            JSONArray jsonArray = new JSONArray(cartItems);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String productName = jsonObject.getString("name");
-                double productPrice = jsonObject.getDouble("price");
-                int productImageResId = jsonObject.getInt("imageResId");
-                int quantity = jsonObject.getInt("quantity");
 
-                cartProductList.add(new Product(productName, "Category", "Description", productPrice, productImageResId, true, quantity));
+        loadCartData();
+
+        checkoutButton.setOnClickListener(v -> processCheckout());
+    }
+
+    private void loadCartData() {
+        cartDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                cartProductList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Product product = snapshot.getValue(Product.class);
+                    cartProductList.add(product);
+                }
+                updateCartUI();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        // Kiểm tra giỏ hàng trống
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(CartActivity.this, "Failed to load cart data.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateCartUI() {
         if (cartProductList.isEmpty()) {
             emptyCartMessage.setVisibility(View.VISIBLE);
             cartRecyclerView.setVisibility(View.GONE);
             checkoutButton.setVisibility(View.GONE);
             cartTotal.setVisibility(View.GONE);
+            cartDiscountedTotal.setVisibility(View.GONE);
         } else {
             emptyCartMessage.setVisibility(View.GONE);
             cartRecyclerView.setVisibility(View.VISIBLE);
             checkoutButton.setVisibility(View.VISIBLE);
             cartTotal.setVisibility(View.VISIBLE);
+            cartDiscountedTotal.setVisibility(View.VISIBLE);
 
-            // Thiết lập RecyclerView
             cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            cartAdapter = new CartAdapter(this, cartProductList, sharedPreferences);
+            cartAdapter = new CartAdapter(this, cartProductList);
             cartRecyclerView.setAdapter(cartAdapter);
 
-            // Tính tổng giá trị giỏ hàng
             calculateTotal();
         }
-
-        // Xử lý sự kiện nút thanh toán
-        checkoutButton.setOnClickListener(v -> processCheckout());
     }
 
     public void calculateTotal() {
         double total = 0;
+        double discountedTotal = 0;
         for (Product product : cartProductList) {
-            total += product.getPrice() * product.getQuantity(); // Tính tổng giá trị sản phẩm dựa trên số lượng
+            total += product.getPrice() * product.getQuantity();
+            discountedTotal += product.getDiscountedPrice() * product.getQuantity();
         }
         cartTotal.setText("Tổng cộng: " + total + " VND");
+        cartDiscountedTotal.setText("Giá sau giảm: " + discountedTotal + " VND");
     }
 
     private void processCheckout() {
-        // Logic xử lý thanh toán
-        // Hiển thị thông báo thanh toán thành công
+        cartDatabase.removeValue();
         Toast.makeText(this, "Thanh toán thành công!", Toast.LENGTH_SHORT).show();
-
-        // Xóa thông tin sản phẩm trong SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("CartPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
-
-        // Chuyển hướng về trang chủ (MainActivity)
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish(); // Đóng CartActivity
+        loadCartData();
     }
 }

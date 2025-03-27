@@ -22,12 +22,10 @@ import java.util.List;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private Context context;
     private List<Product> productList;
-    private SharedPreferences sharedPreferences;
 
-    public CartAdapter(Context context, List<Product> productList, SharedPreferences sharedPreferences) {
+    public CartAdapter(Context context, List<Product> productList) {
         this.context = context;
         this.productList = productList;
-        this.sharedPreferences = sharedPreferences;
     }
 
     @NonNull
@@ -57,7 +55,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 try {
                     int quantity = Integer.parseInt(s.toString());
                     product.setQuantity(quantity);
-                    updateSharedPreferences();
                     ((CartActivity) context).calculateTotal();
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -69,26 +66,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return productList.size();
-    }
-
-    private void updateSharedPreferences() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        JSONArray jsonArray = new JSONArray();
-        for (Product product : productList) {
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("name", product.getName());
-                jsonObject.put("size", "Size"); // Update this if you have size attribute
-                jsonObject.put("price", product.getPrice());
-                jsonObject.put("imageResId", product.getImageResId());
-                jsonObject.put("quantity", product.getQuantity());
-                jsonArray.put(jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        editor.putString("cart_items", jsonArray.toString());
-        editor.apply();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

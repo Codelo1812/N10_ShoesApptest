@@ -1,8 +1,6 @@
 package com.example.vhh;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +10,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import org.json.JSONObject;
-
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,9 +29,13 @@ public class ProductDetailActivity extends AppCompatActivity {
     private Button btnAddToCart;
     private Button btnBuyNow; // Nút mua hàng
     private Button btnBack; // Nút quay về
-    private String selectedSize;
-    private double originalPrice; // Giá gốc của sản phẩm
+    private String selectedSize;// Giá gốc của sản phẩm
+    private double originalPrice;
+    private double discountedPrice;
     private EditText quantityEditText;
+
+    // Khai báo biến cartDatabase
+    private DatabaseReference cartDatabase;
 
     // Danh sách mã giảm giá hợp lệ và tỷ lệ giảm giá tương ứng
     private Map<String, Double> discountCodes;
@@ -56,6 +57,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack); // Tìm nút quay về
         quantityEditText = findViewById(R.id.quantity_edit_text);
 
+        // Khởi tạo Firebase Database
+        cartDatabase = FirebaseDatabase.getInstance().getReference("cart");
+
         // Khởi tạo danh sách mã giảm giá hợp lệ
         discountCodes = new HashMap<>();
         discountCodes.put("DISCOUNT10", 0.10); // Giảm 10%
@@ -68,6 +72,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         String productDescription = intent.getStringExtra("product_description");
         int productImageResId = intent.getIntExtra("product_image_res_id", 0);
         originalPrice = intent.getDoubleExtra("product_price", 0.0);
+        discountedPrice = originalPrice;
 
         // Hiển thị thông tin sản phẩm
         productImageView.setImageResource(productImageResId);
@@ -101,34 +106,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                 if (selectedSize == null) {
                     Toast.makeText(ProductDetailActivity.this, "hãy chọn size giày", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Lưu trữ thông tin sản phẩm trong SharedPreferences
-                    SharedPreferences sharedPreferences = getSharedPreferences("CartPrefs", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                    // Lấy số lượng sản phẩm từ giao diện (giả sử bạn có một EditText để nhập số lượng)
                     int quantity = Integer.parseInt(quantityEditText.getText().toString());
-                    String cartItems = sharedPreferences.getString("cart_items", "");
-
-                    // Tạo chuỗi JSON cho sản phẩm mới
-                    String newProduct = String.format("{\"name\":\"%s\",\"size\":\"%s\",\"price\":%f,\"imageResId\":%d,\"quantity\":%d}", productName, selectedSize, originalPrice, productImageResId, quantity);
-
-                    // Thêm sản phẩm vào chuỗi JSON hiện tại
-                    if (!cartItems.isEmpty()) {
-                        cartItems += ",";
-                    }
-                    cartItems += newProduct;
-
-                    editor.putString("cart_items", "[" + cartItems + "]");
-                    editor.apply();
-
-                    // Thông báo thành công
-                    Toast.makeText(ProductDetailActivity.this, "Thêm vào giỏ hàng thành công!", Toast.LENGTH_SHORT).show();
-
-                    // Chuyển về trang chủ (MainActivity)
-                    Intent intent = new Intent(ProductDetailActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
+                    Product product = new Product(productName,originalPrice, productImageResId, quantity);
+                    addToCart(product);
                 }
             }
         });
@@ -167,6 +147,20 @@ public class ProductDetailActivity extends AppCompatActivity {
             Toast.makeText(this, "Mã giảm giá áp dụng thành công!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Mã giảm giá không hợp lệ!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void addToCart(Product product) {
+        String productId = cartDatabase.push().getKey();
+        if (productId != null) {
+            cartDatabase.child(productId).setValue(product)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(ProductDetailActivity.this, "Thêm vào giỏ hàng thành công!", Toast.LENGTH_SHORT).show();
+                        // Không điều hướng về trang chủ
+                        // Người dùng có thể tiếp tục mua sắm
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(ProductDetailActivity.this, "Thêm vào giỏ hàng thất bại", Toast.LENGTH_SHORT).show();
+                    });
         }
     }
 }

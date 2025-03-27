@@ -50,6 +50,19 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp" />
 
+    <!-- Giá sau giảm -->
+    <TextView
+        android:id="@+id/cart_discounted_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/cart_total"
+        android:layout_toEndOf="@id/cart_total"
+        android:layout_alignBaseline="@id/cart_total"
+        android:text="Giá sau giảm: 0 VND"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_margin="16dp" />
+
     <!-- Nút thanh toán -->
     <Button
         android:id="@+id/checkout_button"

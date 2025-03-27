@@ -5,9 +5,18 @@ public class Product {
     private String category;
     private String description;
     private double price;
+    private double discountedprice;
     private int imageResId;
     private boolean isAvailable;
     private int quantity;
+
+    public Product(){}
+    public Product(String name,double price, int imageResId,int quantity) {
+        this.name = name;
+        this.price = price;
+        this.imageResId = imageResId;
+        this.quantity = quantity;
+    }
 
     public Product(String name, String category, String description, double price, int imageResId, boolean isAvailable,int quantity) {
         this.name = name;
@@ -34,6 +43,9 @@ public class Product {
 
     public double getPrice() {
         return price;
+    }
+    public double getDiscountedPrice() {
+        return discountedprice;
     }
 
     public int getImageResId() {
