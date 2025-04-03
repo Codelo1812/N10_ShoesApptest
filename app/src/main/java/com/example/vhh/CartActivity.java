@@ -6,9 +6,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,7 +50,7 @@ public class CartActivity extends AppCompatActivity {
 
         loadCartData();
 
-        checkoutButton.setOnClickListener(v -> processCheckout());
+        checkoutButton.setOnClickListener(v -> showPaymentForm());
     }
 
     private void loadCartData() {
@@ -100,6 +103,35 @@ public class CartActivity extends AppCompatActivity {
         }
         cartTotal.setText("Tổng cộng: " + total + " VND");
         cartDiscountedTotal.setText("Giá sau giảm: " + discountedTotal + " VND");
+    }
+    private void showPaymentForm() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.layoutpayment, null);
+
+        EditText nameEditText = view.findViewById(R.id.nameEditText);
+        EditText addressEditText = view.findViewById(R.id.addressEditText);
+        EditText phoneEditText = view.findViewById(R.id.phoneEditText);
+        RadioButton cashRadioButton = view.findViewById(R.id.cashRadioButton);
+        Button submitButton = view.findViewById(R.id.submitButton);
+
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+
+        submitButton.setOnClickListener(v -> {
+            String name = nameEditText.getText().toString();
+            String address = addressEditText.getText().toString();
+            String phone = phoneEditText.getText().toString();
+            boolean isCash = cashRadioButton.isChecked();
+
+            if (name.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+                Toast.makeText(CartActivity.this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            } else {
+                dialog.dismiss();
+                processCheckout();
+            }
+        });
+
+        dialog.show();
     }
 
     private void processCheckout() {

@@ -36,6 +36,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.productName.setText(product.getName());
         holder.productPrice.setText(String.format("$%.2f", product.getPrice()));
         holder.productImage.setImageResource(product.getImageResId());
+        holder.heartIcon.setImageResource(product.isFavorite() ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline);
+
+        holder.heartIcon.setOnClickListener(v -> {
+            product.setFavorite(!product.isFavorite());
+            notifyItemChanged(position);
+            // Lưu trạng thái yêu thích vào cơ sở dữ liệu hoặc SharedPreferences nếu cần
+        });
     }
 
     // total number of rows
@@ -49,18 +56,27 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         ImageView productImage;
         TextView productName;
         TextView productPrice;
+        ImageView heartIcon;
 
         ViewHolder(View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.product_image);
             productName = itemView.findViewById(R.id.product_name);
             productPrice = itemView.findViewById(R.id.product_price);
+            heartIcon = itemView.findViewById(R.id.heart_icon); // Khởi tạo icon trái tim
             itemView.setOnClickListener(this);
+            heartIcon.setOnClickListener(this::onHeartIconClick);
         }
 
         @Override
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+        }
+        private void onHeartIconClick(View view) {
+            int position = getAdapterPosition();
+            Product product = mData.get(position);
+            product.setFavorite(!product.isFavorite()); // Đảo ngược trạng thái yêu thích
+            notifyItemChanged(position);
         }
     }
 

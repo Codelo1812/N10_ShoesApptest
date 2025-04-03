@@ -34,5 +34,11 @@
             android:layout_marginTop="4dp"
             android:textSize="14sp"
             android:textColor="@android:color/holo_red_dark" />
+        <ImageView
+            android:id="@+id/heart_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_heart" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
