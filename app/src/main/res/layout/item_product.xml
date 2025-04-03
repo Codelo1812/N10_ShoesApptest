@@ -39,6 +39,6 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_heart" />
+            android:src="@drawable/ic_heart_outline" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

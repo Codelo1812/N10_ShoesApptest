@@ -21,6 +21,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -225,6 +227,15 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.It
             interstitialAd.show(this);
         }
     }
+    private void saveToFavorites(Product product) {
+        SharedPreferences sharedPreferences = getSharedPreferences("FavoritePrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(product);
+        editor.putString("favorite_" + product.getName(), json);
+        editor.apply();
+    }
 
     @Override
     public void onItemClick(View view, int position) {
@@ -232,6 +243,8 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.It
 
         Product product = adapter.getItem(position);
         Toast.makeText(this, "You clicked " + product.getName(), Toast.LENGTH_SHORT).show();
+        saveToFavorites(product);
+
 
         // Tạo Intent để chuyển sang ProductDetailActivity
         Intent intent = new Intent(this, ProductDetailActivity.class);
@@ -281,4 +294,5 @@ public class MainActivity extends AppCompatActivity implements ProductAdapter.It
         // Assign native ad object to the native view.
         adView.setNativeAd(nativeAd);
     }
+
 }
