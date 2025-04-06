@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 public class SettingActivity extends AppCompatActivity {
     Button btnLogout;
     Button btninfo;
@@ -36,7 +35,8 @@ public class SettingActivity extends AppCompatActivity {
         });
         // Xử lý sự kiện click nút quay lại
         imbbackst.setOnClickListener(v -> {
-            finish(); // Đóng màn hình hiện tại và quay lại màn hình trước đó
+            Intent intent = new Intent(SettingActivity.this,ProfileActivity.class);
+            startActivity(intent);// Đóng màn hình hiện tại và quay lại màn hình trước đó
         });
 
         // Thiết lập insets để tương thích với hệ thống (edge-to-edge)

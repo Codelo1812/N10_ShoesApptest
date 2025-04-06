@@ -16,6 +16,18 @@
         android:theme="@style/Theme.VHH"
         tools:targetApi="31">
         <activity
+            android:name=".ViewStatisticActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManageUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManageProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
@@ -40,7 +52,7 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />

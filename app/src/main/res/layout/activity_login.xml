@@ -29,12 +29,12 @@
         android:src="@drawable/baseline_account_circle_24" />
 
     <EditText
-        android:id="@+id/edUserName"
+        android:id="@+id/edUserEmail"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
         android:layout_marginTop="16dp"
-        android:hint="Username"
+        android:hint="Email"
         android:textSize="20sp"
         android:padding="8dp"
         android:backgroundTint="@color/lightprimary"

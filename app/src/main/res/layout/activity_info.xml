@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InfoActivity">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp">
     <ImageButton
         android:id="@+id/imbbackinfo"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginEnd="340dp"
+        android:layout_marginEnd="330dp"
         android:background="@android:color/transparent"
         android:paddingEnd="30dp"
+        android:layout_marginTop="70dp"
         android:src="@drawable/back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,4 +23,65 @@
         app:layout_constraintVertical_bias="0.116"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvname"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="70dp"
+        android:text="Username"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvmail"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"
+        android:text="Email"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvphone"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"
+        android:text="Phone Number"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/tvPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvsex"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"
+        android:text="Gender"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/tvGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"/>
+
+</LinearLayout>
